@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block extracss %}
-  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous"> -->
 
-  
+{% block extracss %}
   <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}"/>
   <link rel="stylesheet" href="{% static 'core/chat_whatsapp.css' %}"/>
 {% endblock %}
@@ -12,10 +10,9 @@
 <div class="container-fluid" id="main-container">
   <div class="row h-100">
     <div class="col-12 col-sm-5 col-md-4 d-flex flex-column h-100" id="chat-list-area" style="position:relative;">
-
       <!-- Navbar -->
       <div class="row d-flex flex-row align-items-center p-2 navbar">
-        <img src="https://via.placeholder.com/400x400" alt="Profile Photo" class="img-fluid rounded-circle mr-2" style="height:50px; cursor:pointer;" onclick="showProfileSettings()" id="display-pic">
+        <img src="{% static 'core/img/s.png' %}" alt="Profile Photo" class="img-fluid rounded-circle mr-2" style="height:50px; cursor:pointer;" onclick="showProfileSettings()" id="display-pic">
         <div class="text-body font-weight-bold" id="username">{{user.username}}</div>
         <div class="nav-item dropdown ml-auto">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v text-body"></i></a>
@@ -36,21 +33,21 @@
           <div class="text-white font-weight-bold">Profile</div>
         </div>
         <div class="d-flex flex-column" style="overflow:auto;">
-          <img src="https://via.placeholder.com/400x400" alt="Profile Photo" class="img-fluid rounded-circle my-5 justify-self-center mx-auto" id="profile-pic">
-          <input type="file" id="profile-pic-input" class="d-none">
+          <img src="{% static 'core/img/d.png' %}" alt="Profile Photo" class="img-fluid rounded-circle my-5 justify-self-center mx-auto" id="profile-pic" onclick="document.getElementById('profile-pic-input').click()">
+          <input type="file" id="profile-pic-input" class="d-none" onchange="updateProfilePicture(event)">
           <div class="bg-white px-3 py-2">
             <div class="text-muted mb-2"><label for="input-name">Your Name</label></div>
-            <input type="text" name="name" id="input-name" class="w-100 border-0 py-2 profile-input">
+            <input type="text" name="name" id="input-name" class="w-100 border-0 py-2 profile-input" value="{{user.first_name}}">
           </div>
           <div class="text-muted p-3 small">
             This is not your username or pin. This name will be visible to your WhatsApp contacts.
           </div>
           <div class="bg-white px-3 py-2">
             <div class="text-muted mb-2"><label for="input-about">About</label></div>
-            <input type="text" name="name" id="input-about" value="" class="w-100 border-0 py-2 profile-input">
+            <input type="text" name="about" id="input-about" value="{{user.profile.about}}" class="w-100 border-0 py-2 profile-input">
           </div>
+          <button onclick="saveProfileChanges()" class="btn btn-primary mx-3 my-3">Save Changes</button>
         </div>
-        
       </div>
     </div>
 
@@ -63,13 +60,12 @@
         <div class="d-block d-sm-none">
           <i class="fas fa-arrow-left p-2 mr-2 text-body" style="font-size: 1.5rem; cursor: pointer;" onclick="showChatList()"></i>
         </div>
-        <img src="https://via.placeholder.com/400x400" alt="Profile Photo" class="img-fluid rounded-circle mr-2" style="height:50px;" id="pic">
+        <img src="{% static 'core/img/d.png' %}" alt="Profile Photo" class="img-fluid rounded-circle mr-2" style="height:50px;" id="pic">
         <div class="d-flex flex-column">
           <div class="text-body font-weight-bold" id="name"></div>
           <div class="text-body small" id="details"></div>
         </div>
         <div class="d-flex flex-row align-items-center ml-auto">
-          <!-- <a href="#"><i class="fas fa-search mx-3 text-secondary d-none d-md-block"></i></a> -->
           <a href="#" onclick="alert('Work in progress.');return false;"><i class="fas fa-paperclip mx-3 text-secondary d-none d-md-block"></i></a>
           <a href="#" onclick="alert('Work in progress.');return false;"><i class="fas fa-ellipsis-v mr-2 mx-sm-3 text-secondary"></i></a>
         </div>
@@ -89,21 +85,30 @@
 </div>
 {% endblock %}
 
-
 {% block extrajs %}
-<!-- <script type="text/javascript">
-    let static_url = "{% static 'whatsapp/' %}";
-  </script>
-<script src="{% static 'whatsapp/datastore.js' %}"></script>
-<script src="{% static 'whatsapp/date-utils.js' %}"></script>
-<script src="{% static 'whatsapp/script.js' %}"></script> -->
-
-
 <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
 <script>
     let sessionKey = '{{ request.session.session_key }}';
     let currentUser = '{{ request.user.username }}';
     let static_url = "{% static 'core' %}";
+  
+    function updateProfilePicture(event) {
+        const file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profile-pic').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function saveProfileChanges() {
+        const name = document.getElementById('input-name').value;
+        const about = document.getElementById('input-about').value;
+        // send this data to your backend for saving
+        alert(`Saved: ${name}, ${about}`);
+    }
 </script>
 <script src="{% static 'core/chat_whatsapp.js' %}"></script>
 {% endblock %}

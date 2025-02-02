@@ -1,45 +1,103 @@
 {% extends 'base.html' %}
-{% block extracss %}
+{% load crispy_forms_tags %}
 
+{% block extracss %}
   <style type="text/css">
     body {
-      background-color: #14213d; /* 006389,073b4c */
+      background-color: #075e54; /* WhatsApp dark green background */
       margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
     }
+
     .logo {
-      margin: 0;
       font-size: 2em;
-      font-weight: 200;
-      font-family: "Audiowide", cursive;
-      color: #92c35e;
+      font-weight: bold;
+      font-family: "Arial", sans-serif;
+      color: #25d366; /* WhatsApp green */
       text-align: center;
-      text-shadow: 1px 1px 0 #333333;
-      line-height: 70px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      color: black;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .card-header {
+      background-color: #25d366; /* WhatsApp green */
+      color: white;
+      font-size: 1.2em;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+      padding: 15px;
+    }
+
+    .btn {
+      background-color: #25d366; /* WhatsApp green */
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #128c7e; /* WhatsApp hover effect */
     }
 
     .login-or {
-       position: relative;
-       color: #aaa;
-       margin-top: 10px;
-       margin-bottom: 10px;
-       padding-top: 10px;
-       padding-bottom: 10px;
-     }
-     .span-or {
-       display: block;
-       position: absolute;
-       left: 50%;
-       top: -2px;
-       margin-left: -25px;
-       background-color: #fff;
-       width: 50px;
-       text-align: center;
-     }
-     .hr-or {
-       height: 1px;
-       margin-top: 0px !important;
-       margin-bottom: 0px !important;
-     }
+      position: relative;
+      color: #ccc;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      text-align: center;
+    }
+
+    .span-or {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      margin-left: -25px;
+      background-color: #ffffff;
+      width: 50px;
+      text-align: center;
+    }
+
+    .hr-or {
+      height: 1px;
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+      background-color: #ddd;
+    }
+
+    p {
+      text-align: center;
+      color: #333;
+    }
+
+    a {
+      color: #25d366; /* WhatsApp green */
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 {% endblock %}
 
@@ -47,7 +105,7 @@
   <div class="container">    
     <div class="row">
       <div class="{% block col_class %}col-md-4 col-sm-8 col-12 offset-md-4{% endblock col_class %}">
-        <p class="logo">Django Whatsapp</p>
+        <p class="logo">WhatsApp</p>
         <div class="card">
           <h4 class="card-header">{% block cardheader %}Log in{% endblock cardheader %}</h4>
           <div class="card-body">
@@ -60,8 +118,20 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            {% endif %}  
-            {% block form %}{% endblock form %}
+            {% endif %}
+
+            <form method="post" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}">
+              {{ form.username|as_crispy_field }}
+              {{ form.password|as_crispy_field }}
+              <button type="submit" class="btn btn-primary btn-block">Log in</button>
+              <div class="login-or">
+                <hr class="hr-or">
+                <span class="span-or">or</span>
+              </div>
+              <p class="text-center">Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+            </form>
           </div>
         </div>
       </div>

@@ -1,20 +1,139 @@
-{% extends 'registration/base.html' %}
-
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block col_class %}col-md-6 col-sm-12 offset-md-3{% endblock col_class %}
-{% block cardheader %}Sign up{% endblock cardheader %}
+{% block extracss %}
+  <style type="text/css">
+    body {
+      background-color: #128C7E;
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
 
-{% block form %}
-<form method="post" novalidate>
-  {% csrf_token %}
-  <input type="hidden" name="next" value="{{ next }}">
-  {{ form|crispy }}
-  <button type="submit" class="btn btn-success btn-block">Create an account</button>
-  <div class="login-or">
-     <hr class="hr-or">
-     <span class="span-or">or</span>
+    .logo {
+      font-size: 2em;
+      font-weight: 400;
+      font-family: "Arial", sans-serif;
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      color: #333;
+      padding: 30px;
+    }
+
+    .card-header {
+      background-color: #25d366;
+      color: white;
+      font-size: 1.4em;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+      padding: 15px 0;
+    }
+
+    .btn {
+      background-color: #25d366;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #128C7E;
+    }
+
+    .login-or {
+      position: relative;
+      color: #999;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      text-align: center;
+    }
+
+    .span-or {
+      display: block;
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      margin-left: -25px;
+      background-color: #ffffff;
+      width: 50px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .hr-or {
+      height: 1px;
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+      background-color: #ddd;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+    }
+
+    a {
+      color: #25d366;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+{% endblock %}
+
+{% block main %}
+  <div class="container">    
+    <div class="row">
+      <div class="col-md-6 col-sm-12 offset-md-3">
+        <p class="logo">WhatsApp</p>
+        <div class="card">
+          <h4 class="card-header">Sign Up</h4>
+          <div class="card-body">
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {% for error in form.non_field_errors %}
+                <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+              {% endfor %}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endif %}
+
+            <form method="post" novalidate>
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}">
+              {{ form|crispy }}
+              <button type="submit" class="btn btn-success btn-block">Create an account</button>
+              <div class="login-or">
+                <hr class="hr-or">
+                <span class="span-or">or</span>
+              </div>
+              <p class="text-center"><a href="{% url 'login' %}">Already have an account?</a></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <p class="text-center"><a href="{% url 'login' %}">Already have an account?</a></p>
-</form>
-{% endblock form %}
+{% endblock %}

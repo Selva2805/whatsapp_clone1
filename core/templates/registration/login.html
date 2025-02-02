@@ -3,6 +3,91 @@
 {% load crispy_forms_tags %}
 
 {% block form %}
+<style>
+    body {
+        background-color: #d8f8e4;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    form {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 350px;
+        border: 1px solid #f1f1f1;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #4d4d4d;
+    }
+
+    input:focus {
+        border-color: #25d366;
+        outline: none;
+    }
+
+    .btn {
+        background-color: #25d366;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .btn:hover {
+        background-color: #128c7e;
+    }
+
+    .login-or {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .hr-or {
+        border: 0;
+        border-top: 1px solid #ccc;
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .span-or {
+        background-color: white;
+        padding: 0 10px;
+        position: relative;
+        top: -10px;
+    }
+
+    p {
+        text-align: center;
+        font-size: 14px;
+    }
+
+    a {
+        color: #25d366;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
 <form method="post" novalidate>
   {% csrf_token %}
   <input type="hidden" name="next" value="{{ next }}">
@@ -13,8 +98,6 @@
      <hr class="hr-or">
      <span class="span-or">or</span>
   </div>
-  <p class="text-center">Don't have account? <a href="{% url 'signup' %}">Sign up here</a></p>
-
+  <p class="text-center">Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
 </form>
 {% endblock form %}
-
